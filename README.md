@@ -82,5 +82,82 @@ class Main {
 * Always check if a method is `static` or not when calling from `main()`.
 
 ---
+Sure! Here's a well-structured explanation in the same Markdown style as your previous entries, focusing on the **input skip bug with `Scanner` in Java**:
 
-Would you like me to help you create a markdown template for your README so it's easy to update with more such learning points?
+---
+
+## ✅ Mistake 3: **Using `nextInt()` before `nextLine()` without consuming leftover newline**
+
+#### 💡 Explanation:
+
+In Java, methods like `nextInt()`, `nextDouble()`, and `next()` **do not consume the newline character (`\n`)** left in the input buffer when the user presses Enter.
+So, if you call `nextLine()` immediately afterward, it **reads that leftover newline**, causing the next input prompt to be **skipped**.
+
+#### ❌ Incorrect:
+
+```java
+import java.util.Scanner;
+
+class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter your age: ");
+        int age = sc.nextInt(); // leaves '\n' in the buffer
+
+        System.out.print("Enter your favorite color: ");
+        String color = sc.nextLine(); // skipped due to leftover '\n'
+
+        System.out.println("Age: " + age);
+        System.out.println("Color: " + color);
+    }
+}
+```
+
+#### 🧨 Problem:
+
+When entering input (Terminal) :
+
+```
+Enter your age: 25
+Enter your favorite color: Color: 
+```
+
+The program skips the color input!
+
+---
+
+#### ✅ Correct:
+
+```java
+import java.util.Scanner;
+
+class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter your age: ");
+        int age = sc.nextInt();
+        sc.nextLine(); // consume the leftover newline
+
+        System.out.print("Enter your favorite color: ");
+        String color = sc.nextLine(); // now works as expected
+
+        System.out.println("Age: " + age);
+        System.out.println("Color: " + color);
+    }
+}
+```
+
+#### 🟢 Output Example (Terminal):
+
+```
+Enter your age: 25
+Enter your favorite color: Blue
+Age: 25
+Color: Blue
+```
+
+---
+
+Let me know if
